@@ -11,7 +11,10 @@
 1. Run `bin/dev`.
 1. You can now try your REST services!
 
-## Dev scripts
+Example
+Nuevo ejemplo
+
+## Dev scripts.
 
 This template provides a handful of scripts to make your dev experience better!
 
