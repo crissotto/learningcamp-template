@@ -8,10 +8,15 @@
 #  restriction :boolean
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  user_id     :integer
 #
 class Preference < ApplicationRecord
-    validates :name, presence: true
-    validates :description, presence: true
+    MAX_PREFERENCES = 5 
+    validates :name, presence: true 
+    validates :description, presence: true 
+    validates :restriction, inclusion: { in: [true, false] } 
+    
+    belongs_to :user 
 end
 
 
