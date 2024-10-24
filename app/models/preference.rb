@@ -10,6 +10,7 @@
 #  updated_at  :datetime         not null
 #  user_id     :integer
 #
+
 class Preference < ApplicationRecord
     MAX_PREFERENCES = 5 
     validates :name, presence: true 

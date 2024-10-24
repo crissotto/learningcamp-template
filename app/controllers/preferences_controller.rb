@@ -33,7 +33,6 @@ class PreferencesController < ApplicationController
       redirect_to preferences_path, notice: 'Preference was successfully updated.'   # if the preference is updated successfully, redirect to the preferences page with a success message
     else
       render :edit, status: :unprocessable_entity   # if the preference is not updated, render the edit template with an unprocessable entity status
-
     end
   end
 
