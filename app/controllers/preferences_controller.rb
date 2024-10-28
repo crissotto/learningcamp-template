@@ -2,6 +2,9 @@
 
 class PreferencesController < ApplicationController
 
+  # Callbacks
+  before_action :set_preference, only: %i[edit update show destroy] 
+
   def index
     @preferences = current_user.preferences.includes(:user)
     @pagy, @records = pagy(@preferences)
@@ -29,12 +32,14 @@ class PreferencesController < ApplicationController
   def update
     @preference = Preference.find(params[:id])  # find the preference with the given id
 
-    if @preference.update(preference_params)
+    if @preference.update!(preference_params)
       redirect_to preferences_path, notice: 'Preference was successfully updated.'   # if the preference is updated successfully, redirect to the preferences page with a success message
     else
       render :edit, status: :unprocessable_entity   # if the preference is not updated, render the edit template with an unprocessable entity status
     end
   end
+
+  def edit; end
 
   def destroy # destroy a preference
     @preference = current_user.preferences.find(params[:id]) # find the preference to be destroyed
@@ -49,14 +54,12 @@ class PreferencesController < ApplicationController
 
   def show
     @preference = current_user.preferences.find(params[:id])  # find the preference to be shown
-
-  end
-
-  def set_preference
-    @preference = Preference.find(params[:id])  # find the preference to be updated
   end
 
   private
+  def set_preference
+    @preference = Preference.find(params[:id])  # find the preference to be updated
+  end
 
   def preference_params 
     params.require(:preference).permit(:name, :description, :restriction)  # permit the name, description and restriction fields for the preference
