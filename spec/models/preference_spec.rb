@@ -1,0 +1,17 @@
+# == Schema Information
+#
+# Table name: preferences
+#
+#  id          :bigint           not null, primary key
+#  name        :string
+#  description :text
+#  restriction :boolean
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  user_id     :integer
+#
+require 'rails_helper'
+
+RSpec.describe Preference, type: :model do
+  pending "add some examples to (or delete) #{__FILE__}"
+end
