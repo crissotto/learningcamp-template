@@ -50,7 +50,22 @@ class User < ApplicationRecord
   include DeviseTokenAuth::Concerns::User
 
   has_many :preferences
-  # has_many :recipes
+  has_many :recipes
+
+    # Method to retrieve dietary restrictions
+    def dietary_restrictions
+      preferences.flat_map { |pref| pref.dietary_restrictions }
+    end
+  
+    # Method to retrieve preferred ingredients
+    def preferred_ingredients
+      preferences.flat_map { |pref| pref.preferred_ingredients }
+    end
+  
+    # Method to retrieve avoided ingredients
+    def avoided_ingredients
+      preferences.flat_map { |pref| pref.avoided_ingredients }
+    end
 
   validates :uid, uniqueness: { scope: :provider }
   validates :email, uniqueness: true, on: :update

@@ -42,7 +42,18 @@ class RecipeGeneratorService
 
   def prompt
     <<~CONTENT
-      Prompt goes here
+      You are a helpful assistant that generates recipes based on user input. 
+      The user has the following preferences:
+      - Dietary Restrictions: #{user.dietary_restrictions.join(', ')}
+      - Preferred Ingredients: #{user.preferred_ingredients.join(', ')}
+      - Avoided Ingredients: #{user.avoided_ingredients.join(', ')}
+
+      Create a recipe in JSON format with the following structure:
+      {
+        "name": "Dish Name",
+        "content": "Recipe content including ingredients, instructions, and cooking time."
+      }
+      Use the ingredients provided by the user to create a delicious recipe while adhering to their preferences.
     CONTENT
   end
 
@@ -58,9 +69,19 @@ class RecipeGeneratorService
 
   def create_recipe(response)
     parsed_response = response.is_a?(String) ? JSON.parse(response) : response
-    content = JSON.parse(parsed_response.dig('choices', 0, 'message', 'content'))
-    # create recipe here
+  content = JSON.parse(parsed_response.dig('choices', 0, 'message', 'content'))
+
+  # Assuming you have a Recipe model to save the recipe
+  recipe = Recipe.create!(name: content['name'], content: content['content'])
+
+  # Return the created recipe as a hash
+  {
+    name: recipe.name,
+    content: recipe.content
+  }
   rescue JSON::ParserError => exception
-    raise RecipeGeneratorServiceError, exception.message
+  raise RecipeGeneratorServiceError, exception.message
+  rescue ActiveRecord::RecordInvalid => exception
+  raise RecipeGeneratorServiceError, exception.message
   end
 end
